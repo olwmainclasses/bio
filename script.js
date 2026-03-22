@@ -65,7 +65,22 @@ bgImage.src=encodeURI(ASSETS.background);
 
 audio.src=encodeURI(ASSETS.track);
 
-trackCover.src=encodeURI(ASSETS.cover);
+const defaultCoverSrc=encodeURI(ASSETS.cover);
+let coverObjectUrl=null;
+
+function setCoverSrc(src){
+  if(coverObjectUrl){
+    try{URL.revokeObjectURL(coverObjectUrl)}catch(e){}
+    coverObjectUrl=null;
+  }
+  trackCover.src=src;
+}
+
+setCoverSrc(defaultCoverSrc);
+
+trackCover.addEventListener("error",()=>{
+  if(trackCover.src!==defaultCoverSrc) setCoverSrc(defaultCoverSrc);
+});
 
 function decodeFileNameFromPath(p){
   const raw=(p.split("/").pop() || "");
@@ -95,9 +110,11 @@ trackArtist.textContent=meta.artist || "";
 function setCoverFromTags(picture){
   if(!picture || !picture.data) return false;
   const arr=new Uint8Array(picture.data);
+  if(!arr.length) return false;
   const type=picture.format || "image/jpeg";
   const blob=new Blob([arr],{type});
-  trackCover.src=URL.createObjectURL(blob);
+  coverObjectUrl=URL.createObjectURL(blob);
+  trackCover.src=coverObjectUrl;
   return true;
 }
 
@@ -116,7 +133,12 @@ function tryReadWithJsMediaTags(){
       onSuccess:(res)=>{
         const tags=(res && res.tags) || {};
         applyTextTags(tags);
-        if(tags.picture) setCoverFromTags(tags.picture);
+        if(tags.picture){
+          const ok=setCoverFromTags(tags.picture);
+          if(!ok) setCoverSrc(defaultCoverSrc);
+        }else{
+          setCoverSrc(defaultCoverSrc);
+        }
       },
       onError:()=>{}
     });
@@ -199,7 +221,7 @@ async function tryExtractMp3Cover(url){
 }
 
 if(!tryReadWithJsMediaTags()){
-  tryExtractMp3Cover(audio.src).then((u)=>{if(u) trackCover.src=u});
+  tryExtractMp3Cover(audio.src).then((u)=>{if(u) setCoverSrc(u); else setCoverSrc(defaultCoverSrc)});
 }
 
 audio.addEventListener("loadedmetadata",()=>{
