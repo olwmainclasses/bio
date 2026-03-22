@@ -133,12 +133,7 @@ function tryReadWithJsMediaTags(){
       onSuccess:(res)=>{
         const tags=(res && res.tags) || {};
         applyTextTags(tags);
-        if(tags.picture){
-          const ok=setCoverFromTags(tags.picture);
-          if(!ok) setCoverSrc(defaultCoverSrc);
-        }else{
-          setCoverSrc(defaultCoverSrc);
-        }
+        setCoverSrc(defaultCoverSrc);
       },
       onError:()=>{}
     });
@@ -220,9 +215,8 @@ async function tryExtractMp3Cover(url){
   return null;
 }
 
-if(!tryReadWithJsMediaTags()){
-  tryExtractMp3Cover(audio.src).then((u)=>{if(u) setCoverSrc(u); else setCoverSrc(defaultCoverSrc)});
-}
+tryReadWithJsMediaTags();
+setCoverSrc(defaultCoverSrc);
 
 audio.addEventListener("loadedmetadata",()=>{
   timeTotal.textContent=fmtTime(audio.duration);
