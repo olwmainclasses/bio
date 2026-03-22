@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="color-scheme" content="dark light" />
+  <title>Bio</title>
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    referrerpolicy="no-referrer"
+  />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <div class="bg" aria-hidden="true">
+    <img id="bgImage" alt="" />
+  </div>
+
+  <div class="intro" id="intro" aria-label="Intro">
+    <button class="intro-text" id="introBtn" type="button" data-text="click me <3"></button>
+  </div>
+
+  <main class="wrap" id="app">
+    <div class="panel" id="panel">
+      <section class="card" aria-label="Bio card">
+        <div class="avatar" aria-hidden="true">
+          <video id="avatarVideo" muted autoplay loop playsinline></video>
+          <img id="avatarImage" alt="Avatar" />
+        </div>
+
+        <h1 class="username" id="username"></h1>
+
+        <div class="tags" id="tags" aria-label="Tags"></div>
+
+        <div class="divider" role="separator" aria-hidden="true"></div>
+
+        <p class="bio" id="bio"></p>
+
+        <div class="divider" role="separator" aria-hidden="true"></div>
+
+        <div class="social" aria-label="Social links">
+          <a class="icon-btn" id="githubLink" href="#" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+            <i class="fa-brands fa-github"></i>
+          </a>
+
+          <a class="icon-btn" id="telegramLink" href="#" target="_blank" rel="noopener noreferrer" aria-label="Telegram">
+            <i class="fa-brands fa-telegram"></i>
+          </a>
+
+          <button class="icon-btn" id="discordCopy" type="button" aria-label="Copy Discord tag">
+            <i class="fa-brands fa-discord"></i>
+          </button>
+
+          <div class="tooltip" id="copiedTip" role="status" aria-live="polite">Copied!</div>
+        </div>
+      </section>
+
+      <section class="player-card" aria-label="Music player">
+        <div class="player" aria-label="Music player">
+          <audio id="audio" preload="metadata"></audio>
+          <div class="player-top">
+            <div class="track-cover" aria-hidden="true">
+              <img id="trackCover" alt="Track cover" />
+            </div>
+            <div class="track-meta">
+              <div class="track-title" id="trackTitle"></div>
+              <div class="track-artist" id="trackArtist"></div>
+            </div>
+            <div class="player-actions" aria-label="Player controls">
+              <button class="play" id="playPause" type="button" aria-label="Play/Pause">
+                <i class="fa-solid fa-play" id="playIcon"></i>
+              </button>
+              <div class="volume" aria-label="Volume">
+                <i class="fa-solid fa-volume-high" id="volIcon" aria-hidden="true"></i>
+                <input id="volume" type="range" min="0" max="1" step="0.01" value="0.7" aria-label="Volume slider" />
+              </div>
+            </div>
+          </div>
+
+          <div class="player-bottom">
+            <div class="time" id="timeCurrent">0:00</div>
+            <input id="progress" class="progress" type="range" min="0" max="1000" value="0" aria-label="Seek" />
+            <div class="time" id="timeTotal">0:00</div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/jsmediatags@3.9.7/dist/jsmediatags.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
